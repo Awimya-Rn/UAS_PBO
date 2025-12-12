@@ -147,11 +147,6 @@ public class DatabaseManager {
     }
   }
 
-  // --- METODE HELPER YANG DIPERBAIKI ---
-
-  /**
-   * Menambahkan link antara karakter dan skill ke tabel character_skills.
-   */
   private void insertCharacterSkillLink(int characterId, int skillId) {
     String sql = "INSERT INTO character_skills (character_id, skill_id) VALUES (?, ?)";
     try (Connection conn = getConnection();
@@ -164,9 +159,6 @@ public class DatabaseManager {
     }
   }
 
-  /**
-   * Menambahkan link antara karakter dan efek status ke tabel character_effects.
-   */
   private void insertCharacterEffectLink(int characterId, int effectId) {
     String sql = "INSERT INTO character_effects (character_id, effect_id) VALUES (?, ?)";
     try (Connection conn = getConnection();
@@ -179,7 +171,6 @@ public class DatabaseManager {
     }
   }
 
-  // --- SISANYA METODE TIDAK BERUBAH ---
 
   private int getSkillId(Skill skill) {
     String sql = "SELECT id FROM skills WHERE name = ?";
@@ -338,6 +329,10 @@ public class DatabaseManager {
       strategy = new LevelScaledStrategy(strategyParam);
     } else if ("Fixed".equals(strategyType)) {
       strategy = new FixedStrategy(strategyParam);
+    }
+
+    if (strategy == null) {
+      strategy = new FixedStrategy(1); 
     }
 
     if ("Player".equals(type)) {
